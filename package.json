@@ -1,0 +1,17 @@
+{
+  "name": "discord-server-database",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun ."
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.13.0"
+  }
+}
