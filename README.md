@@ -30,6 +30,7 @@ export const serverDatabaseName = "beri";
 
 ```
 /status (returns a leaderboard of users' message counts)
+/database (Returns the database in JSON formatting)
 ```
 
 ## 🙌 Credits

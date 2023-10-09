@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import { MyClient } from "..";
 import { db } from "./ready";
-import { userData, messageJson } from "../types/userData";
+import { userData } from "../types/userData";
 import { serverId, serverName } from "../constants";
 
 export const name = "messageCreate";

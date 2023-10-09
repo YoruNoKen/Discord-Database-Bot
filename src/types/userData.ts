@@ -1,4 +1,4 @@
-export interface messageJson {
+interface messageJson {
   msgId: string;
   content: string;
   timeStamp: number;
