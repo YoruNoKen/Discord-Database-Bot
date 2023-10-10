@@ -10,6 +10,7 @@ export const execute = async (message: Message, client: MyClient) => {
   const ChannelId = message.channelId;
   if (ServerId !== serverId) return console.error(`Erm.. I think the bot is being used somewhere that's not ${serverName}.`);
 
+  const MessageAttachments = JSON.stringify(message.attachments.map((attachment) => attachment.url));
   const MessageContent = message.content;
   const MessageId = message.id;
   const UserId = message.author.id;
@@ -18,7 +19,7 @@ export const execute = async (message: Message, client: MyClient) => {
   const stmt = db.query("SELECT * FROM users WHERE UserId = ?");
   const userData = stmt.get(UserId) as userData;
 
-  const userJson = { MessageId, MessageContent, TimeStamp, ChannelId };
+  const userJson = { MessageId, MessageContent, TimeStamp, ChannelId, MessageAttachments };
   if (userData) {
     // User exists, update the data
     const content = JSON.parse(userData.Content);
