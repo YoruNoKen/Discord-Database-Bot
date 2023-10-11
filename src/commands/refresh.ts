@@ -1,11 +1,11 @@
-import { ChatInputCommandInteraction, TextChannel, DMChannel, Message, Collection } from "discord.js";
+import { ChatInputCommandInteraction, TextChannel, DMChannel, Message, Collection, ChannelType } from "discord.js";
 import { MyClient } from "..";
 import { insertMessage } from "../utils";
 
 async function fetchChannelMessages(client: MyClient, channelId: string) {
-  const channel = (await client.channels.fetch(channelId)) as TextChannel | DMChannel;
+  const channel = await client.channels.fetch(channelId);
 
-  if (!channel) {
+  if (!channel || channel.type !== ChannelType.GuildText) {
     return false;
   }
 
@@ -13,7 +13,7 @@ async function fetchChannelMessages(client: MyClient, channelId: string) {
   let lastMessageId = null;
 
   while (true) {
-    const fetchedMessages: any = await channel.messages.fetch({ limit: 100, before: lastMessageId });
+    var fetchedMessages: any = await channel.messages.fetch({ limit: 100, before: lastMessageId });
 
     if (fetchedMessages.size === 0) {
       // No more messages to fetch
