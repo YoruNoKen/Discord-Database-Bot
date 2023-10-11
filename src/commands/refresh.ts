@@ -28,9 +28,8 @@ async function fetchChannelMessages(client: MyClient, channelId: string) {
     await insertMessage(msg);
     console.log(`#${index} (${channel.name})`);
     index++;
+    await new Promise((resolve) => setTimeout(resolve, 2));
   }
-
-  await new Promise((resolve) => setTimeout(resolve, 3));
 }
 
 export async function run({ interaction, client }: { interaction: ChatInputCommandInteraction; client: MyClient }) {
