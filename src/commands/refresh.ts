@@ -12,6 +12,7 @@ async function fetchChannelMessages(client: MyClient, channelId: string) {
   let messages: any[] = [];
   let lastMessageId = null;
 
+  let index = 1;
   while (true) {
     var fetchedMessages: any = await channel.messages.fetch({ limit: 100, before: lastMessageId });
 
@@ -25,6 +26,8 @@ async function fetchChannelMessages(client: MyClient, channelId: string) {
 
     for (const msg of messages) {
       await insertMessage(msg);
+      console.log("#" + index.toString());
+      index++;
     }
 
     await new Promise((resolve) => setTimeout(resolve, 3));
@@ -50,6 +53,7 @@ export async function run({ interaction, client }: { interaction: ChatInputComma
   for (const channel of channels.values()) {
     const channelId = channel.id;
     if (channel.type !== ChannelType.GuildText) continue;
+    console.log("#" + channel.name + ": started.");
     await fetchChannelMessages(client, channelId);
     console.log("#" + channel.name + ": done.");
   }
