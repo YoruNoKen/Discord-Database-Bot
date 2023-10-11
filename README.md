@@ -29,8 +29,9 @@ export const serverDatabaseName = "beri";
 ## 🖥️ Commands 
 
 ```
-/status (returns a leaderboard of users' message counts)
+/status (Returns a leaderboard of users' message counts)
 /database (Returns the database in JSON formatting)
+/refresh (Refreshes the database)
 ```
 
 ## 🙌 Credits

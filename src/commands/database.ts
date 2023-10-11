@@ -2,7 +2,6 @@ import { ChatInputCommandInteraction, EmbedBuilder, MessagePayloadOption } from 
 import { MyClient } from "..";
 import { Database } from "bun:sqlite";
 import { userData } from "../types/userData";
-import { serverName } from "../constants";
 
 export async function run({ interaction, db, client }: { interaction: ChatInputCommandInteraction; db: Database; client: MyClient }) {
   await interaction.deferReply();

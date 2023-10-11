@@ -5,9 +5,9 @@ import { serverName, serverId } from "../constants";
 
 export const name = "interactionCreate";
 export const execute = async (interaction: ChatInputCommandInteraction, client: MyClient) => {
-  if (interaction.guildId !== serverId) {
-    return console.error(`Erm.. I think the bot is being used somewhere that's not ${serverName}.`);
-  }
+  // if (interaction.guildId !== serverId) {
+  //   return console.error(`Erm.. I think the bot is being used somewhere that's not ${serverName}.`);
+  // }
 
   if (interaction.type !== InteractionType.ApplicationCommand) {
     return;
