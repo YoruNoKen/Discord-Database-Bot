@@ -23,10 +23,12 @@ async function fetchChannelMessages(client: MyClient, channelId: string) {
     messages = messages.concat(Array.from(fetchedMessages.values()));
     lastMessageId = fetchedMessages.last().id;
 
-    await new Promise((resolve) => setTimeout(resolve, 5));
-  }
+    for (const msg of messages) {
+      await insertMessage(msg);
+    }
 
-  messages.forEach(async (msg) => await insertMessage(msg));
+    await new Promise((resolve) => setTimeout(resolve, 3));
+  }
 }
 
 export async function run({ interaction, client }: { interaction: ChatInputCommandInteraction; client: MyClient }) {
@@ -45,10 +47,12 @@ export async function run({ interaction, client }: { interaction: ChatInputComma
   }
 
   await interaction.editReply("Refreshing... This might take a while.");
-  channels.forEach(async (channel) => {
+  for (const channel of channels.values()) {
     const channelId = channel.id;
+    if (channel.type !== ChannelType.GuildText) continue;
     await fetchChannelMessages(client, channelId);
-  });
+    console.log("#" + channel.name + ": done.");
+  }
   return await interaction.editReply("Refreshed database!");
 }
 export { data } from "../data/refreshData";

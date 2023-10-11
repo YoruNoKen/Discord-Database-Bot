@@ -11,20 +11,20 @@ export async function insertMessage(message: Message): Promise<void> {
   const ChannelId = message.channelId;
 
   const stmt = db.query("SELECT * FROM users WHERE UserId = ?");
-  const userData = stmt.get(UserId) as userData;
+  const userData = (await stmt.get(UserId)) as userData;
 
   const userJson = { MessageId, MessageContent, TimeStamp, ChannelId, MessageAttachments };
   if (userData) {
     // User exists, update the data
     const content = JSON.parse(userData.Content);
-
     const messageIds = content.map((msg: any) => msg.MessageId);
 
     if (!messageIds.includes(MessageId)) {
       const updatedContent = JSON.stringify([...content, userJson]);
       const updatedMessageCount = (parseFloat(userData.MessageCount) + 1).toString();
 
-      db.prepare("UPDATE users SET Content = ?, MessageCount = ? WHERE UserId = ?").run(updatedContent, updatedMessageCount, UserId);
+      const prep = db.prepare("UPDATE users SET Content = ?, MessageCount = ? WHERE UserId = ?");
+      prep.run(updatedContent, updatedMessageCount, UserId);
     }
     return;
   }
