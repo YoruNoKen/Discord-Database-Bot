@@ -9,29 +9,28 @@ async function fetchChannelMessages(client: MyClient, channelId: string) {
     return false;
   }
 
-  let messages: any[] = [];
-  let lastMessageId = null;
+  let messages: Message[] = [];
+
+  // Create the message pointer
+  let message = await channel.messages.fetch({ limit: 1 }).then((messagePage) => (messagePage.size === 1 ? messagePage.at(0) : null));
 
   let index = 1;
-  while (true) {
-    var fetchedMessages: any = await channel.messages.fetch({ limit: 100, before: lastMessageId });
+  while (message) {
+    await channel.messages.fetch({ limit: 100, before: message.id }).then((messagePage) => {
+      messagePage.forEach((msg) => messages.push(msg));
 
-    if (fetchedMessages.size === 0) {
-      // No more messages to fetch
-      break;
-    }
-
-    messages = messages.concat(Array.from(fetchedMessages.values()));
-    lastMessageId = fetchedMessages.last().id;
-
-    for (const msg of messages) {
-      await insertMessage(msg);
-      console.log("#" + index.toString());
-      index++;
-    }
-
-    await new Promise((resolve) => setTimeout(resolve, 3));
+      // Update the message pointer to be the last message on the page of messages
+      message = 0 < messagePage.size ? messagePage.at(messagePage.size - 1) : null;
+    });
   }
+
+  for (const msg of messages) {
+    await insertMessage(msg);
+    console.log(`#${index} (${channel.name})`);
+    index++;
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, 3));
 }
 
 export async function run({ interaction, client }: { interaction: ChatInputCommandInteraction; client: MyClient }) {
